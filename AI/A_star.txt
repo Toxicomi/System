@@ -1,0 +1,62 @@
+import heapq
+
+# Map of cities and their distances
+sindhudurg_map = {
+    'Sawantwadi': {'Kudal': 20, 'Vengurla': 25},
+    'Kudal': {'Sawantwadi': 20, 'Malvan': 30, 'Vengurla': 25, 'Kankavli': 15},
+    'Vengurla': {'Sawantwadi': 25, 'Malvan': 35},
+    'Malvan': {'Kudal': 30, 'Vengurla': 35, 'Kankavli': 40},
+    'Kankavli': {'Kudal': 20, 'Malvan': 40, 'Sawantwadi': 15, 'Devgad': 35},
+    'Vaibhavwadi': {'Kankavli': 25, 'Devgad': 35},
+    'Devgad': {'Vaibhavwadi': 35, 'Kunkeshwar': 15, 'Jamsande': 7, 'Malvan': 45}
+}
+
+class Node:
+    def __init__(self, city, distance, parent=None):
+        self.city = city
+        self.distance = distance
+        self.parent = parent
+
+    def __lt__(self, other):
+        return self.distance < other.distance
+
+def heuristic(node, goal):
+    return 0  # No heuristic used in this case
+
+def astar_search(graph, start, goal):
+    open_list = []
+    closed_set = set()
+    heapq.heappush(open_list, start)
+
+    while open_list:
+        current_node = heapq.heappop(open_list)
+
+        if current_node.city == goal.city:
+            path = []
+            while current_node:
+                path.append(current_node.city)
+                current_node = current_node.parent
+            return path[::-1]  # Reverse the path to get it from start to goal
+
+        closed_set.add(current_node.city)
+
+        for neighbor, distance in graph[current_node.city].items():
+            if neighbor not in closed_set:
+                new_distance = current_node.distance + distance
+                new_node = Node(neighbor, new_distance, current_node)
+                heapq.heappush(open_list, new_node)
+
+    return None  # No path found
+
+start_city = 'Sawantwadi'
+goal_city = 'Devgad'    
+start_node = Node(start_city, 0)
+goal_node = Node(goal_city, 0)
+
+path = astar_search(sindhudurg_map, start_node, goal_node)
+
+if path:
+    print("Current city is:",start_city,"\nDestination is:", goal_city)
+    print("Path found:", path)
+else:
+    print("No path found")

@@ -1,0 +1,23 @@
+
+import tensorflow as tf
+
+t_a = tf.constant([[5, 2]], dtype=tf.int32)
+t_b = tf.constant([[3, 4]], dtype=tf.int32)
+
+t_add = tf.add(t_a, t_b)
+t_sub = tf.subtract (t_a, t_b)
+t_mul = tf.multiply(t_a, t_b)
+t_div = tf.divide (t_a, t_b)
+t_power = tf.pow(t_a, t_b)
+
+print ("Addition: \n", t_add. numpy())
+print ("Subtraction: \n", t_sub.numpy())
+print ("Multiplication: \n", t_mul.numpy())
+print ("Division: \n", t_div.numpy())
+print ("Power: \n", t_power.numpy())
+
+
+
+
+
+
